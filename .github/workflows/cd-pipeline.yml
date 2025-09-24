@@ -31,6 +31,7 @@ jobs:
       - name: Configure Docker
         run: gcloud auth configure-docker ${{ env.GAR_LOCATION }}
 
+      # This step is now correctly indented
       - name: Build and Push Docker Image
         run: |
           docker build -t ${{ env.GAR_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.APP_NAME }}:${{ github.sha }} .
