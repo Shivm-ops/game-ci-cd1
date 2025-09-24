@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, session
 import random
 
+# Triggering the workflow one last time
 app = Flask(__name__)
 # A secret key is needed to use sessions in Flask
 app.secret_key = os.urandom(24)
