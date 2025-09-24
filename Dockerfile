@@ -15,7 +15,7 @@ COPY . .
 
 # Make port 8080 available to the world outside this container
 # Cloud Run expects the container to listen on the port defined by the PORT env var
-ENV PORT 8080
+ENV PORT=8080
 EXPOSE 8080
 
 # Run app.py when the container launches
