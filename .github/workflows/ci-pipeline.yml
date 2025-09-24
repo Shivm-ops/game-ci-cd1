@@ -1,14 +1,13 @@
 name: CI - Build and Test
 
-# .github/workflows/ci-pipeline.yml
-
 on:
-    push:
-      branches:
-        - 'main' # Now it will run on pushes to main
-    pull_request:
-      branches:
-        - 'main'
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
 jobs:
   build-and-test:
     name: Build and Test
@@ -36,4 +35,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Run unit tests
-        run: pytest
+        run: PYTHONPATH=. pytest
