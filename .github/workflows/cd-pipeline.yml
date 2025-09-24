@@ -6,7 +6,6 @@ on:
       - 'main'
 
 env:
-  # CORRECT: References the secrets stored in GitHub settings
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GAR_LOCATION: ${{ secrets.GCP_ARTIFACT_REGISTRY }}
   APP_NAME: guess-the-number
@@ -24,7 +23,6 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          # CORRECT: Securely uses the secret from GitHub settings
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
       - name: Set up Cloud SDK
@@ -33,14 +31,15 @@ jobs:
       - name: Configure Docker
         run: gcloud auth configure-docker ${{ env.GAR_LOCATION }}
 
-        - name: Build and Push Docker Image
+      - name: Build and Push Docker Image
         run: |
           docker build -t ${{ env.GAR_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.APP_NAME }}:${{ github.sha }} .
           docker push ${{ env.GAR_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.APP_NAME }}:${{ github.sha }}
+
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: ${{ env.APP_NAME }}
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.APP_NAME }}:${{ github.sha }}
-          flags: '--allow-unauthenticated' # Use for public services
+          flags: '--allow-unauthenticated'
